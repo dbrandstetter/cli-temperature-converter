@@ -1,10 +1,11 @@
 extern crate core;
 
-mod conversion;
-
 use std::io;
 use std::string::ToString;
+
 use crate::conversion::*;
+
+mod conversion;
 
 const CELSIUS_MIN: f64 = -273.15;
 const FAHRENHEIT_MIN: f64 = -459.67;
@@ -51,7 +52,7 @@ fn convert_temperature(initial_unit: String, target_unit: String, temp_initial: 
 				// Initial and target unit have to be alike
 				_ => temp_initial,
 			}
-		},
+		}
 		KELVIN_SYMBOL => {
 			match target_unit.as_str() {
 				CELSIUS_SYMBOL => kelvin_to_celsius(temp_initial),
@@ -60,7 +61,7 @@ fn convert_temperature(initial_unit: String, target_unit: String, temp_initial: 
 				// Initial and target unit have to be alike
 				_ => temp_initial,
 			}
-		},
+		}
 		// Initial and target unit have to be alike
 		_ => temp_initial,
 	};
@@ -91,7 +92,7 @@ fn get_unit(input: String) -> String {
 			.to_string();
 	}
 
-	return get_unit_symbol(unit.to_string());
+	return get_unit_symbol(unit.to_string().trim().to_lowercase());
 }
 
 
@@ -127,15 +128,18 @@ fn get_initial_temp(unit: String) -> f64 {
 	let mut input: String = String::new();
 
 	'getting_degrees: loop {
-		println!("Please input degrees {}:", if unit == "F" { "Fahrenheit".to_string() } else if unit == "K" { "Kelvin".to_string() } else if unit == "C" { "Celsius".to_string()
+		println!("Please input degrees {}:", if unit == "F" { "Fahrenheit".to_string() } else if unit == "K" { "Kelvin".to_string() } else if unit == "C" {
+			"Celsius".to_string()
 		} else { "".to_string() });
+
+		input.clear();
 
 		io::stdin()
 			.read_line(&mut input)
 			.expect("Failed to read line")
 			.to_string();
 
-		let value: f64 = input.trim().parse().unwrap();
+		let value: f64 = input.trim().replace(",", ".").parse().unwrap();
 
 		if valid_degree_value(unit.to_string(), value) {
 			break 'getting_degrees;
@@ -147,13 +151,13 @@ fn get_initial_temp(unit: String) -> f64 {
 
 fn valid_degree_value(unit: String, value: f64) -> bool {
 	if value < FAHRENHEIT_MIN && unit == "F" {
-		eprintln!("Fahrenheit temperatures cannot be lower than {FAHRENHEIT_MIN}!\nYour input: {value}");
+		eprintln!("Fahrenheit temperatures cannot be lower than {FAHRENHEIT_MIN}!\nYour input: {value}\n");
 		return false;
 	} else if value < CELSIUS_MIN && unit == "C" {
-		eprintln!("Celsius temperatures cannot be lower than {CELSIUS_MIN}!\nYour input: {value}");
+		eprintln!("Celsius temperatures cannot be lower than {CELSIUS_MIN}!\nYour input: {value}\n");
 		return false;
 	} else if value < KELVIN_MIN && unit == "K" {
-		eprintln!("Kelvin temperatures cannot be lower than {KELVIN_MIN}!\nYour input: {value}");
+		eprintln!("Kelvin temperatures cannot be lower than {KELVIN_MIN}!\nYour input: {value}\n");
 		return false;
 	}
 

@@ -37,7 +37,7 @@ fn main() {
 		// Calculate the converted degree value
 		temp_converted = convert_temperature(initial_unit.to_string(), target_unit.to_string(), temp_initial);
 
-		println!("{temp_initial}{initial_unit} equates to {temp_converted}{target_unit}\n");
+		println!("{temp_initial:.2}{initial_unit} equates to {temp_converted:.2}{target_unit}\n");
 	}
 }
 
@@ -181,13 +181,13 @@ fn get_initial_temp(unit: String) -> f64 {
 fn valid_degree_value(unit: String, value: f64) -> bool {
 	// No temperatures below absolute zero are possible - inform user if wrongly typed
 	if value < FAHRENHEIT_MIN && unit == "F" {
-		eprintln!("Fahrenheit temperatures cannot be lower than {FAHRENHEIT_MIN}!\nYour input: {value}\n");
+		eprintln!("Fahrenheit temperatures cannot be lower than {FAHRENHEIT_MIN}!\nYour input: {value:.2}\n");
 		return false;
 	} else if value < CELSIUS_MIN && unit == "C" {
-		eprintln!("Celsius temperatures cannot be lower than {CELSIUS_MIN}!\nYour input: {value}\n");
+		eprintln!("Celsius temperatures cannot be lower than {CELSIUS_MIN}!\nYour input: {value:.2}\n");
 		return false;
 	} else if value < KELVIN_MIN && unit == "K" {
-		eprintln!("Kelvin temperatures cannot be lower than {KELVIN_MIN}!\nYour input: {value}\n");
+		eprintln!("Kelvin temperatures cannot be lower than {KELVIN_MIN}!\nYour input: {value:.2}\n");
 		return false;
 	}
 
